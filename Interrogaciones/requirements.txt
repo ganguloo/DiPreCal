@@ -1,0 +1,8 @@
+pandas
+numpy
+networkx
+matplotlib
+openpyxl
+pytest
+bokeh==2.4.3
+polars

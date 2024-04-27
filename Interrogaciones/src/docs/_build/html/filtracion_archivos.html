@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>filtracion_archivos package &mdash; iPre: Calendarizacion Interrogaciones Escuela Ingeniería 2023 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="generacion_datos package" href="generacion_datos.html" />
+    <link rel="prev" title="datos package" href="datos.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            iPre: Calendarizacion Interrogaciones Escuela Ingeniería
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="datos.html">datos package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">filtracion_archivos package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-filtracion_archivos.modulos">filtracion_archivos.modulos module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.modulos.cursos_con_macroseccion"><code class="docutils literal notranslate"><span class="pre">cursos_con_macroseccion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.modulos.cursos_y_horario"><code class="docutils literal notranslate"><span class="pre">cursos_y_horario()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.modulos.cursos_y_horario_polars"><code class="docutils literal notranslate"><span class="pre">cursos_y_horario_polars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.modulos.limpieza_cursos"><code class="docutils literal notranslate"><span class="pre">limpieza_cursos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.modulos.ramos_mismo_modulo"><code class="docutils literal notranslate"><span class="pre">ramos_mismo_modulo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.modulos.reemplazar_substrings"><code class="docutils literal notranslate"><span class="pre">reemplazar_substrings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-filtracion_archivos.modulos_polars">filtracion_archivos.modulos_polars module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.modulos_polars.cursos_y_horario_polars"><code class="docutils literal notranslate"><span class="pre">cursos_y_horario_polars()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-filtracion_archivos.prerrequisitos">filtracion_archivos.prerrequisitos module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.prerrequisitos.cursos_ingenieria"><code class="docutils literal notranslate"><span class="pre">cursos_ingenieria()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.prerrequisitos.diccionario_cursos_y_prerrequisitos"><code class="docutils literal notranslate"><span class="pre">diccionario_cursos_y_prerrequisitos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-filtracion_archivos.prerrequisitos_polars">filtracion_archivos.prerrequisitos_polars module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#filtracion_archivos.prerrequisitos_polars.cursos_ingenieria_polars"><code class="docutils literal notranslate"><span class="pre">cursos_ingenieria_polars()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-filtracion_archivos">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generacion_datos.html">generacion_datos package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grafos.html">grafos package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization.html">optimization module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test.html">test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_2.html">test_2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">iPre: Calendarizacion Interrogaciones Escuela Ingeniería</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">src</a></li>
+      <li class="breadcrumb-item active">filtracion_archivos package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/filtracion_archivos.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="filtracion-archivos-package">
+<h1>filtracion_archivos package<a class="headerlink" href="#filtracion-archivos-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-filtracion_archivos.modulos">
+<span id="filtracion-archivos-modulos-module"></span><h2>filtracion_archivos.modulos module<a class="headerlink" href="#module-filtracion_archivos.modulos" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.modulos.cursos_con_macroseccion">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.modulos.</span></span><span class="sig-name descname"><span class="pre">cursos_con_macroseccion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#filtracion_archivos.modulos.cursos_con_macroseccion" title="Permalink to this definition"></a></dt>
+<dd><p>Retorna diccionario donde cada key es un ramo con su sigla y sección y el value asociado
+a la key es un string donde aparece la lista cruzada y la macrosección a la que pertenece.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.modulos.cursos_y_horario">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.modulos.</span></span><span class="sig-name descname"><span class="pre">cursos_y_horario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_excel_listado_nrc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columnas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['Nombre</span> <span class="pre">Curso',</span> <span class="pre">'Horario',</span> <span class="pre">'Sigla_Seccion',</span> <span class="pre">'Lista</span> <span class="pre">Cruzada',</span> <span class="pre">'Macrosección']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#filtracion_archivos.modulos.cursos_y_horario" title="Permalink to this definition"></a></dt>
+<dd><p>Retorna un dataframe que contiene únicamente los módulos de las cátedras junto a otras
+columnas. Por defecto, también incluye el nombre del curso, horario, sigla y seccion, lista
+cruzada y macrosección.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_excel_listado_nrc</strong> (<em>str</em>) – Corresponde a la ruta del archivo excel del listado NRC.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe de los cursos junto a sus módulos.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.core.frame.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.modulos.cursos_y_horario_polars">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.modulos.</span></span><span class="sig-name descname"><span class="pre">cursos_y_horario_polars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_excel_listado_nrc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuniones</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['CLAS</span> <span class="pre">-</span> <span class="pre">Cátedra',</span> <span class="pre">'LAB</span> <span class="pre">-</span> <span class="pre">Laboratorio',</span> <span class="pre">'TAL</span> <span class="pre">-</span> <span class="pre">Taller']</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#filtracion_archivos.modulos.cursos_y_horario_polars" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.modulos.limpieza_cursos">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.modulos.</span></span><span class="sig-name descname"><span class="pre">limpieza_cursos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lista_cursos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">set</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#filtracion_archivos.modulos.limpieza_cursos" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Limpia el dataframe que contiene las clases y ayudantías, eliminando la parte de CLAS y AYU.</dt><dd><p>Además, elimina los whitespaces de los strings.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lista_cursos</strong> (<em>list</em>) – Corresponde a la lista de los cursos y sus módulos.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Una tupla que contiene un set de los módulos y una lista de listas, donde</dt><dd><p>cada lista es de la forma [nombre_curso, módulos].</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[set, list]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.modulos.ramos_mismo_modulo">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.modulos.</span></span><span class="sig-name descname"><span class="pre">ramos_mismo_modulo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_horarios</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lista_horarios</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#filtracion_archivos.modulos.ramos_mismo_modulo" title="Permalink to this definition"></a></dt>
+<dd><p>Recibe el set de horarios y la lista de horarios entregados por la función limpieza_cursos.
+Entrega un diccionario de los módulos y cursos asociados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>set_horarios</strong> (<em>set</em>) – Contiene los módulos.</p></li>
+<li><p><strong>lista_horarios</strong> (<em>list</em>) – Es una lista de listas de la forma [nombre_curso, modulos]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Retorna un diccionario donde cada key es un módulo y el value asociado es</dt><dd><p>una lista con todos los cursos que usan ese módulo.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, list]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.modulos.reemplazar_substrings">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.modulos.</span></span><span class="sig-name descname"><span class="pre">reemplazar_substrings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cadena</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reemplazos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#filtracion_archivos.modulos.reemplazar_substrings" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-filtracion_archivos.modulos_polars">
+<span id="filtracion-archivos-modulos-polars-module"></span><h2>filtracion_archivos.modulos_polars module<a class="headerlink" href="#module-filtracion_archivos.modulos_polars" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.modulos_polars.cursos_y_horario_polars">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.modulos_polars.</span></span><span class="sig-name descname"><span class="pre">cursos_y_horario_polars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_excel_listado_nrc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursos_ing_a_considerar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columnas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['Nombre</span> <span class="pre">Curso',</span> <span class="pre">'Horario',</span> <span class="pre">'Sigla_Seccion',</span> <span class="pre">'Lista</span> <span class="pre">Cruzada',</span> <span class="pre">'Macrosección',</span> <span class="pre">'Escuela',</span> <span class="pre">'Sigla',</span> <span class="pre">'Socio</span> <span class="pre">Integración']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">siglas_fmat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['MAT1630',</span> <span class="pre">'EYP1113',</span> <span class="pre">'MAT1610',</span> <span class="pre">'MAT1620',</span> <span class="pre">'MAT1640',</span> <span class="pre">'MAT1203']</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#filtracion_archivos.modulos_polars.cursos_y_horario_polars" title="Permalink to this definition"></a></dt>
+<dd><p>Retorna un dataframe que contiene únicamente los módulos de las cátedras junto a otras
+columnas. Por defecto, también incluye el nombre del curso, horario, sigla y seccion, lista
+cruzada y macrosección.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_excel_listado_nrc</strong> (<em>str</em>) – Corresponde a la ruta del archivo excel del listado NRC.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe de los cursos junto a sus módulos.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.core.frame.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-filtracion_archivos.prerrequisitos">
+<span id="filtracion-archivos-prerrequisitos-module"></span><h2>filtracion_archivos.prerrequisitos module<a class="headerlink" href="#module-filtracion_archivos.prerrequisitos" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.prerrequisitos.cursos_ingenieria">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.prerrequisitos.</span></span><span class="sig-name descname"><span class="pre">cursos_ingenieria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_excel_cursos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#filtracion_archivos.prerrequisitos.cursos_ingenieria" title="Permalink to this definition"></a></dt>
+<dd><p>Retorna los cursos de Ingeniería junto con sus prerrequisitos y su sigla correspondiente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_excel_cursos</strong> (<em>str</em>) – Corresponde a la ruta del archivo excel del listado de materias.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe de los cursos de ingeniería.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.core.frame.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.prerrequisitos.diccionario_cursos_y_prerrequisitos">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.prerrequisitos.</span></span><span class="sig-name descname"><span class="pre">diccionario_cursos_y_prerrequisitos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe_ingenieria</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#filtracion_archivos.prerrequisitos.diccionario_cursos_y_prerrequisitos" title="Permalink to this definition"></a></dt>
+<dd><p>Retorna un diccionario de los cursos junto con sus requisitos, donde cada key es el nombre
+del curso y el value asociado es una lista con los prerrequisitos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataframe_ingenieria</strong> (<em>pd.core.frame.DataFrame</em>) – Corresponde a un DataFrame que contiene las
+columnas con el nombre de los cursos y los prerrequisitos.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Diccionario de los cursos con sus prerrequisitos.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-filtracion_archivos.prerrequisitos_polars">
+<span id="filtracion-archivos-prerrequisitos-polars-module"></span><h2>filtracion_archivos.prerrequisitos_polars module<a class="headerlink" href="#module-filtracion_archivos.prerrequisitos_polars" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="filtracion_archivos.prerrequisitos_polars.cursos_ingenieria_polars">
+<span class="sig-prename descclassname"><span class="pre">filtracion_archivos.prerrequisitos_polars.</span></span><span class="sig-name descname"><span class="pre">cursos_ingenieria_polars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_excel_cursos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#filtracion_archivos.prerrequisitos_polars.cursos_ingenieria_polars" title="Permalink to this definition"></a></dt>
+<dd><p>Retorna los cursos de Ingeniería junto con sus prerrequisitos y su sigla correspondiente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_excel_cursos</strong> (<em>str</em>) – Corresponde a la ruta del archivo excel del listado de materias.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe de los cursos de ingeniería.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pl.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-filtracion_archivos">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-filtracion_archivos" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="datos.html" class="btn btn-neutral float-left" title="datos package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generacion_datos.html" class="btn btn-neutral float-right" title="generacion_datos package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Gustavo Angulo y Francisco Solís.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

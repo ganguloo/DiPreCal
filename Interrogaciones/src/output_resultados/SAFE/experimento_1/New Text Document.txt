@@ -1,0 +1,21 @@
+Interrupt request received
+ 15446  9623  582.90328  105  734  701.00000  576.00000  17.8%  3284 27362s
+H17153  8991                     671.0000000  576.00000  14.2%  3045 27363s
+
+Cutting planes
+  Gomory 3
+  Cover 1
+  Clique 518
+  MIR 5
+  StrongCG 1
+  Flow cover 39
+  Zero half 64
+  RLT 1
+
+Explored 17238 nodes (53063110 simplex iterations) in 27363.52 seconds (30273.68 work units)
+Thread count was 16 (of 16 available processors)
+
+Solution count 10 671 701 716 ... 921
+
+Solve interrupted
+Best objective 6.710000000000e+02, best bound 5.760000000000e+02, gap 14.1580%
