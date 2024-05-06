@@ -65,7 +65,10 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
     # cursos_mod_dipre: No tiene documentación. OJO Con que hay un comentario con que intentaron
     # implementar algo y no funcionó. Comentar profesor angulo si lo arreglaron y no borraron el comentario
     # o realmente no funciona. De ahí agregar la documentación, ya entendí lo que hace.
-
+    # cursos_con_macroseccion: Si tiene
+    # reemplazar_siglas_con_macrosecciones: No tiene, pero es autoexplicativo el nombre. De ahí ver
+    # si alcanzo a hacerle documentación
+    # juntar_grafos_prerrequisitos_y_modulos: No tiene
 
 
 
@@ -166,6 +169,8 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
             file.write("CONJUNTO_INTERROGACIONES = " +
                        json.dumps(conjunto_cursos, ensure_ascii=False, indent=4))
 
+
+    # Revisar bien que hace esto, igual se ve medio explicativ, pero revisarlo bien
     if crear_parametros_fechas:
         fechas_validas, *placeholder = generacion_calendario()
         with open(PATH_FECHAS, 'w', encoding="utf-8") as file:
