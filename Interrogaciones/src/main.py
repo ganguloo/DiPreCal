@@ -29,7 +29,8 @@ from grafos.drawing import dibujar_grafo
 
 from parametros.parametros import (PATH_CURSOS_IES, PATH_LISTADO_NRC,PATH_LISTADO_NRC_ORIGINAL,PATH_CURSOS_IES_ORIGINAL, PATH_MATERIAS,
                                    IDENTIFICADORES_FMAT, CURSOS_3_IES, CURSOS_COORDINADOS, SEC_COORDINADAS,
-                                   INCLUIR_FIS_Y_QIM, INCLUIR_MAT, IDENTIFICADORES_FIS_Y_QIM)
+                                   INCLUIR_FIS_Y_QIM, INCLUIR_MAT, IDENTIFICADORES_FIS_Y_QIM, PATH_IES,
+                                   PATH_FECHAS)
 
 from datos.generacion_calendario import generacion_calendario
 
@@ -41,38 +42,62 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
     if crear_parametros_ies:
         coordinados_a_macrosecciones(PATH_CURSOS_IES_ORIGINAL,PATH_LISTADO_NRC_ORIGINAL,CURSOS_COORDINADOS,SEC_COORDINADAS)
 
+    # Francisco 5 de Mayo: Para que se usa después lo de coordinados_a_macrosecciones. ¿Cuál es el sentido
+    # de hacer esto, si antes ya estaba hecho de que se juntaban los cursos al momento de crear los grafos?
+    # Preguntarle al profe
+
+    # Documentación:
+
+    # -- GRAFO PRERREQUISITOS --
+    # coordinados_a_macrosecciones: Si tiene
+    # cursos_ingenieria_polars: Si tiene
+    # diccionario_cursos_y_prerrequisitos: Si tiene
+    # grafo_prerrequisito: No tiene -> Igual es medio autoexplicativo
+    # anadir_arcos_transitividad: No tiene -> Igual es medio autoexplicativo
+    # nuevos_arcos: Si tiene
+
+
+    # -- GRAFO MÓDULOS --
+    # cursos_con_pruebas: No tiene -> Me imagino que retorna todos los cursos que si tienen pruebas.
+    # es medio autoexplicativo igual, de ahí revisarlo.
+    # cursos_mat_con_pruebas: No tiene -> Me imagino que es lo mismo que arriba
+    # cursos_fisquim_con_pruebas: No tiene -> Me imagino que es lo mismo que arriba
+    # cursos_mod_dipre: No tiene documentación. OJO Con que hay un comentario con que intentaron
+    # implementar algo y no funcionó. Comentar profesor angulo si lo arreglaron y no borraron el comentario
+    # o realmente no funciona. De ahí agregar la documentación, ya entendí lo que hace.
+
+
+
+
     # -------- GRAFO PRERREQUISITOS -------
     start_time = time.time() #Creo que se debe mover arriba
     dataframe_ing = cursos_ingenieria_polars(PATH_MATERIAS, INCLUIR_MAT, INCLUIR_FIS_Y_QIM, IDENTIFICADORES_FMAT, IDENTIFICADORES_FIS_Y_QIM)  # Funciona bien
 
     cursos = diccionario_cursos_y_prerrequisitos(dataframe_ing, PATH_MATERIAS)
     grafo_prerrequisitos = grafo_prerrequisito(cursos)
-    # Se hace para que el arco vaya del prerrequisito al ramo
-    # grafo_prerrequisitos = grafo_prerrequisitos.reverse() # Esto ya estaba en la función de grafo_prerrequito
     logging.info(f"El grafo de prerrequisitos antes de la transitividad es {grafo_prerrequisitos}")
-    # Debería de funcionar bien
     anadir_arcos_transitividad(grafo_prerrequisitos)
     logging.info(f"El grafo de prerrequisitos luego de la transitividad es {grafo_prerrequisitos}")
     arcos_nuevos = nuevos_arcos(grafo_prerrequisitos)  # Funciona bien.
-    # print(nx.nodes(grafo_prerrequisitos))
     # dibujar_grafo("grafo_prerrequisitos_ing", grafo_prerrequisitos)
+    
     # -------- GRAFO MÓDULOS -------
     cursos_ing_ies = cursos_con_pruebas(PATH_CURSOS_IES)
+    
     if INCLUIR_MAT:
         cursos_mat = cursos_mat_con_pruebas(PATH_LISTADO_NRC, siglas_fmat=IDENTIFICADORES_FMAT)
         for j in cursos_mat:
             cursos_ing_ies.append(j)
+    
     if INCLUIR_FIS_Y_QIM:
         cursos_fisqim = cursos_fisqim_con_pruebas(PATH_LISTADO_NRC, siglas_fisqim=IDENTIFICADORES_FIS_Y_QIM)
         for j in cursos_fisqim:
             cursos_ing_ies.append(j)
-    # cursos_con_horario = cursos_y_horario(path_excel_nrc)
-    # cursos_con_horario = cursos_y_horario_polars(path_excel_nrc, cursos_ing_ies)
+    
     cursos_con_horario = cursos_mod_dipre(
         PATH_LISTADO_NRC, cursos_ing_ies, incluir_fmat=INCLUIR_MAT, incluir_fis_y_qim=INCLUIR_FIS_Y_QIM,
         identificadores_fmat=IDENTIFICADORES_FMAT, identificadores_fis_y_qim= IDENTIFICADORES_FIS_Y_QIM).to_pandas()
-    # cursos_con_horario.to_excel("ramos_ing_ies.xlsx", index=False)
-    # sys.exit()
+    
     macrosecciones = cursos_con_macroseccion(cursos_con_horario)
 
 
@@ -80,7 +105,6 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
     cursos_pertenecientes_a_macroseccion = set(itertools.
                                                chain(*list(macrosecciones.values())))
 
-    # print(cursos_pertenecientes_a_macroseccion)
     grafo_modulos = grafo_mismo_modulo(PATH_LISTADO_NRC, cursos_ing_ies)
     # dibujar_grafo("grafo_antes_macroseccion", grafo_modulos)
     
@@ -88,7 +112,6 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
                                                          macrosecciones,
                                                          cursos_pertenecientes_a_macroseccion)
     cursos_en_macroseccion = dict()
-    # print(cursos_en_macroseccion)
     for macroseccion, sigla_secc in macrosecciones.items():
         for i in sigla_secc:
             cursos_en_macroseccion[i] = macroseccion
@@ -96,7 +119,6 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
     logging.info(
         f"Grafo antes de juntarlo con prerrequisitos es {grafo_modulos}")
     
-    # sys.exit()
     # dibujar_grafo("grafo_luego_macroseccion", grafo_modulos)
 
     juntar_grafos_prerrequisitos_y_modulos(grafo_modulos,
@@ -114,6 +136,7 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
             mapeo_macrosseciones_label[nodo] = nombre
 
     grafo_modulos = nx.relabel_nodes(grafo_modulos, mapeo_macrosseciones_label)
+    
     # Guardado de datos
     guardado_conexiones(grafo_modulos)
     guardado_cursos(grafo_modulos)
@@ -123,17 +146,9 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
     # dibujar_grafo(title, grafo_modulos)
     logging.info(f"El grafo al final es {grafo_modulos}")
 
-    # grafo_pd = nx.to_pandas_edgelist(grafo_modulos)
-    nx.write_edgelist(grafo_modulos, os.path.join(
-        "instancia_datos", "grafo_main"), delimiter=";")
-    nx.write_edgelist(
-        grafo_modulos, "grafo_modulos_edgelist.txt", data=False, delimiter=";")
-    # grafo_pd.to_excel(os.path.join("instancia_datos", "grafo_edgelist.xlsx"), index=False)
+    nx.write_edgelist(grafo_modulos, os.path.join("instancia_datos", "grafo_main"), delimiter=";")
+    nx.write_edgelist(grafo_modulos, "grafo_modulos_edgelist.txt", data=False, delimiter=";")
 
-
-
-    PATH_IES = os.path.join("parametros", "cursos_ies.py")
-    PATH_FECHAS = os.path.join("parametros", "cursos_fechas.py")
     
     if crear_parametros_ies:
         with open(PATH_IES, "w", encoding="utf-8") as file:

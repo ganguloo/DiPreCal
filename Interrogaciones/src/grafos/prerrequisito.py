@@ -12,6 +12,7 @@ def grafo_prerrequisito(cursos: dict):
         else:
             grafo_prerrequisitos.add_node(curso)
 
+    # Se hace para que el arco vaya del prerrequisito al ramo
     grafo_prerrequisitos = grafo_prerrequisitos.reverse()
     return grafo_prerrequisitos
 

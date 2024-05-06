@@ -20,7 +20,7 @@ def cursos_con_pruebas(path_excel,
     siglas_validas = siglas_validas["Sigla"].to_list()
     return siglas_validas
 
-def cursos_mat_con_pruebas(path_nrc,columnas_interes=["Escuela", "Nombre Curso", "Sigla"],siglas_fmat = []) -> list: 
+def cursos_mat_con_pruebas(path_nrc,columnas_interes=["Escuela", "Nombre Curso", "Sigla"], siglas_fmat = []) -> list: 
 
     cursos = pl.read_excel(path_nrc, read_csv_options={"infer_schema_length": 3000})
     new_columns = {col: col.strip() for col in cursos.columns}

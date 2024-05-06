@@ -3,7 +3,7 @@ import pandas as pd
 import itertools
 
 
-def  cursos_mod_dipre(path, cursos_ing, columnas: list = ["Nombre Curso", "Horario",
+def cursos_mod_dipre(path, cursos_ing, columnas: list = ["Nombre Curso", "Horario",
                                                          "Sigla_Seccion", "Lista Cruzada",
                                                          "Macrosección", "Escuela", "Sigla",
                                                          "Socio Integración", "Tipo Reunión",
@@ -60,6 +60,8 @@ def  cursos_mod_dipre(path, cursos_ing, columnas: list = ["Nombre Curso", "Horar
         cursos_fmat_dataframe = cursos_fmat_dataframe[dataframe.columns]
         dataframe = dataframe.extend(cursos_fmat_dataframe)
     
+
+    # NOTA COMENTARIO FRANCISCO: ¿Arreglaron esto en su momento?
     # Añadimos otras facultades No me resulto
     if incluir_fis_y_qim:
         cursos_fisqim_dataframe = cursos_fis_y_qim(path, siglas_fis_qim=identificadores_fis_y_qim)
