@@ -40,7 +40,10 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
     
     # -------- MACROSECCIONES CURSOS Y SECCIONES COORDINADAS ---------
     if crear_parametros_ies:
-        coordinados_a_macrosecciones(PATH_CURSOS_IES_ORIGINAL,PATH_LISTADO_NRC_ORIGINAL,CURSOS_COORDINADOS,SEC_COORDINADAS)
+        coordinados_a_macrosecciones(PATH_CURSOS_IES_ORIGINAL, PATH_LISTADO_NRC_ORIGINAL, CURSOS_COORDINADOS, SEC_COORDINADAS)
+
+
+    # sys.exit("EXIT")
 
     # Francisco 5 de Mayo: Para que se usa después lo de coordinados_a_macrosecciones. ¿Cuál es el sentido
     # de hacer esto, si antes ya estaba hecho de que se juntaban los cursos al momento de crear los grafos?

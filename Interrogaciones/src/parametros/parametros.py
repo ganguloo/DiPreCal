@@ -1,15 +1,32 @@
 import os
 from datos.conversion_excel_parametros import fechas_prohibidas, excel_cursos_coordinados, mapeo_fechas, mapeo
 
+
+
 PATH_LISTADO_NRC = os.path.join("excel_horarios",
                                  "Prueba_nrc.xlsx")
-PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios",
-                                 "Listado_NRC_2023_Enero.xlsx")
+
+# Parece que esta ruta tiene todos los ramos de la U, para sacar también de ahí los ramos matemáticos
+# y todo eso
+# PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios", "Listado_NRC_2023_Enero.xlsx")
+# PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios", "Cursos planificados 2024-2 detalle.xlsx")
+PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios", "004 - Listado de NRC Programados - JUN-24-2024.xlsx")
+
+
+
 PATH_VACANTES = os.path.join("instancia_datos", "vacantes.xlsx")
 PATH_CONEXIONES = os.path.join("instancia_datos", "conexiones.xlsx")
-
 PATH_CURSOS_IES = os.path.join("excel_horarios", "Prueba_ies.xlsx")
-PATH_CURSOS_IES_ORIGINAL = os.path.join( "excel_horarios", "004 - Listado_NRC_Programados.xlsx")
+
+
+# No olvidar desecomentar esto en caso de que no funcione: 22 Junio 2024
+# Aquí son los ramos de ingeniería que necesitan prueba
+# PATH_CURSOS_IES_ORIGINAL = os.path.join("excel_horarios", "004 - Listado_NRC_Programados.xlsx")
+
+# PATH_CURSOS_IES_ORIGINAL = os.path.join("excel_horarios", "Cursos planificados 2024-2 detalle.xlsx")
+PATH_CURSOS_IES_ORIGINAL = os.path.join("excel_horarios", "Declaración de evaluaciones por curso ING2024-2.xlsx")
+
+
 
 PATH_IES = os.path.join("parametros", "cursos_ies.py")
 PATH_FECHAS = os.path.join("parametros", "cursos_fechas.py")
@@ -62,8 +79,8 @@ SEMANA_LICENCIATURA = mapeo(PATH_PARAMETROS, "Fechas", "H1")
 
 #siglas fmat, fis y qim hardcodeadas en filtracion_archivos modulos_mod_dipre
 
-INCLUIR_MAT = True
-INCLUIR_FIS_Y_QIM = True
+INCLUIR_MAT = False
+INCLUIR_FIS_Y_QIM = False
 
 IDENTIFICADORES_FMAT = ["MAT1640", "MAT1630", "MAT1620", "MAT1610","MAT1207","EYP1113", "MAT1203"]
 # IDENTIFICADORES_FMAT = ["EYP_MOD", "XN_MOD", "WV_MOD", "YF_MOD", "GCH_MOD", "ED_MOD"]
