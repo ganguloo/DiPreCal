@@ -1,6 +1,8 @@
 import pandas as pd
 from datetime import datetime
 
+# from ..parametros.parametros import FECHA_INICIO_CLASES, FECHA_FIN_CLASES 
+
 def fechas_prohibidas(excel_file, sheet):
     # Read the Excel file into a pandas DataFrame
     df = pd.read_excel(excel_file, sheet_name=sheet)
@@ -33,7 +35,7 @@ def fijar_interrogaciones(excel_file, sheet):
     # Extract the data from the first three columns and store them in a list of lists
     first_three_columns_data = df.iloc[:, :3].values.tolist()
 
-    fecha_inicio_clases = datetime(2023, 3, 6)
+    fecha_inicio_clases = datetime(2024, 8, 5)
 
     cursos_coordinados = excel_cursos_coordinados(excel_file, "Cursos Coordinados")
 

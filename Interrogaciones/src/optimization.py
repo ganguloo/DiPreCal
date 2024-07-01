@@ -17,7 +17,8 @@ from parametros.cursos_ies import CONJUNTO_INTERROGACIONES
 from parametros.cursos_fechas import CONJUNTO_FECHAS
 
 from parametros.parametros import (NUM_EXPERIMENTO, DELTA_DIAS, GRUPOS, DELTAMIN,
-                                   DELTAMAX,VACANTES,PRUEBAS_PREASIGNADAS, DIA_FECHA_RETIRO_CURSOS,SEMANA_LICENCIATURA, DIA_I2)
+                                   DELTAMAX,VACANTES,PRUEBAS_PREASIGNADAS, DIA_FECHA_RETIRO_CURSOS,SEMANA_LICENCIATURA, DIA_I2,
+                                   FECHA_INICIO_CLASES, FECHA_FIN_CLASES)
 
 #No se debe importar entremedio pero es la solucion rapida
 from generacion_parametros.grupos import completar_grupos_cursos_ies
@@ -34,7 +35,7 @@ fechas_calendario_cliques = list(fechas_validas_cliques.keys())
 dia_retiro = DIA_FECHA_RETIRO_CURSOS #8 mayo?
 dia_i2 = DIA_I2
 
-diasem = (SEMANA_LICENCIATURA-1)*7
+diasem = (SEMANA_LICENCIATURA - 1) * 7
 
 arcos = cargar_arcos()
 cursos = cargar_cursos()
@@ -70,7 +71,7 @@ print("Modelo nuevo")
 delta_min = DELTAMIN
 delta_max = DELTAMAX
 
-dias_calendario = 117
+dias_calendario = (FECHA_FIN_CLASES - FECHA_INICIO_CLASES).days
 
 J = range(0,4)
 

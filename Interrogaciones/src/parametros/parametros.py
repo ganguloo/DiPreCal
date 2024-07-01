@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from datos.conversion_excel_parametros import fechas_prohibidas, excel_cursos_coordinados, mapeo_fechas, mapeo
 
 
@@ -27,9 +28,9 @@ PATH_CURSOS_IES = os.path.join("excel_horarios", "Prueba_ies.xlsx")
 PATH_CURSOS_IES_ORIGINAL = os.path.join("excel_horarios", "Declaración de evaluaciones por curso ING2024-2.xlsx")
 
 
-
 PATH_IES = os.path.join("parametros", "cursos_ies.py")
 PATH_FECHAS = os.path.join("parametros", "cursos_fechas.py")
+
 # PATH_CURSOS_IES = os.path.join(
 #     "excel_horarios", "004-filtrado.xlsx")
 
@@ -39,7 +40,8 @@ PATH_LISTADO_CURSOS = os.path.join("instancia_datos", "listado_cursos.xlsx")
 NUM_EXPERIMENTO = 2
 
 # Ruta excel parametros
-PATH_PARAMETROS = os.path.join("excel_horarios", "parametros.xlsx")
+# PATH_PARAMETROS = os.path.join("excel_horarios", "parametros.xlsx")
+PATH_PARAMETROS = os.path.join("excel_horarios", "parametros_2024.xlsx")
 
 # Obtenemos las fechas prohibidas del excel
 FECHAS_PROHIBIDAS = fechas_prohibidas(PATH_PARAMETROS, "Fechas")
@@ -86,3 +88,7 @@ IDENTIFICADORES_FMAT = ["MAT1640", "MAT1630", "MAT1620", "MAT1610","MAT1207","EY
 # IDENTIFICADORES_FMAT = ["EYP_MOD", "XN_MOD", "WV_MOD", "YF_MOD", "GCH_MOD", "ED_MOD"]
 
 IDENTIFICADORES_FIS_Y_QIM = ["FIS1514", "FIS1523", "FIS1533", "QIM100E"]
+
+
+FECHA_INICIO_CLASES = datetime(2024, 8, 5)
+FECHA_FIN_CLASES = datetime(2024, 11, 29)

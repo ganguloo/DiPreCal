@@ -1,16 +1,19 @@
 from datetime import datetime, timedelta
-from parametros.parametros import FECHAS_PROHIBIDAS
+from parametros.parametros import (FECHAS_PROHIBIDAS, FECHA_INICIO_CLASES, FECHA_FIN_CLASES)
 
-def generacion_calendario(mes_inicial=3,
-                          dia_inicial=6,
-                          ano=2023,
+def generacion_calendario(mes_inicial=8,
+                          dia_inicial=5,
+                          ano=2024,
                           dias_prohibidos=FECHAS_PROHIBIDAS,
                           fmat=False):
     fecha_calendario = datetime(ano, mes_inicial, dia_inicial)
     fechas = dict()
     fechas_validas = dict()
     mapeo_fechas = dict()
-    for indice in range(0, 117):
+
+    cantidad_dias = (FECHA_FIN_CLASES - FECHA_INICIO_CLASES).days
+
+    for indice in range(cantidad_dias):
         # si es False, considera los días viernes
         if fmat is False:
             if fecha_calendario.strftime("%d-%b") not in dias_prohibidos and fecha_calendario.weekday() not in [5,6]:
