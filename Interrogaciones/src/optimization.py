@@ -172,18 +172,32 @@ model.write("modelo.lp")
 #Minimiza por defecto, por lo que no se indica GRB.MINIMIZE
 #minimiza vacantes que quedan sin prueba
 model.setObjectiveN(quicksum(z[curso, interrogacion] * vacantes[curso] for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso]), 
-                    index=0, priority=10, name="Obj1" )
+                    index=0, priority=10, name="Interrogaciones no asignadas" )
+
+#trata de adelantar interrogaciones
+model.setObjectiveN(quicksum(x[curso, dia, interrogacion] * vacantes[curso] * dia for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso] for dia in fechas_calendario[curso] ),
+                   index=2, priority=9, name="Adelantar interrogaciones")
+
 #minimiza vacantes asignadas antes/despues de las fechas deseadas
 model.setObjectiveN(quicksum(quicksum(x[curso, dia, 1] * vacantes[curso] * (dia - dia_retiro) for dia in fechas_calendario[curso] if dia >= dia_retiro) +
                     quicksum(x[curso,dia, 2] * vacantes[curso] * (dia_i2 - dia) for dia in fechas_calendario[curso] if dia <= dia_i2) for curso in cursos),
-                   index=1, priority=8, name="Obj2")
+                   index=1, priority=8, name="Fechas deseadas")
 
 # model.setObjectiveN(quicksum(x[curso,dia,1]*vacantes[curso]*dia for curso in cursos for dia in fechas_calendario[curso] if dia >= dia_retiro),
 #                     index = 1, priority = 8, name = "Obj2")
 
+env0 = model.getMultiobjEnv(0)
+env1 = model.getMultiobjEnv(1)
+env2 = model.getMultiobjEnv(2)
+
+env0.setParam('TimeLimit', 60)
+env1.setParam('TimeLimit', 60)
+env2.setParam('TimeLimit', 30)
+
 model.optimize()
 
-# Decirle a Gurobi que use un solo Thread
+model.discardMultiobjEnvs()
+
 if model.status == gp.GRB.INFEASIBLE:
     print(f"[ERROR]: El modelo es infactible")
     model.computeIIS()
@@ -194,7 +208,7 @@ if model.status == gp.GRB.INFEASIBLE:
 # model.write("model.sol")
 
 for variable in model.getVars():
-    if variable.X != 0:
+    if variable.X > 0.1:
         try:
             print(f"{variable.varName} = {variable.X}")
         except UnicodeDecodeError:
@@ -203,8 +217,15 @@ for variable in model.getVars():
 
 with open("resultados_rest_vacantes.txt", 'w', encoding="utf-8") as file:
     for variable in model.getVars():
-        if variable.X != 0:
+        if variable.X > 0.1:
             file.write(f"{variable.varName} = {variable.X}\n")
+
+print("Interrogaciones no programadas")
+for curso in cursos:
+    for interrogacion in CONJUNTO_INTERROGACIONES[curso]:
+        if z[curso, interrogacion].x > 0.1:
+            print(curso, interrogacion, vacantes[curso])
+
 
 
 # model.write("modelo.mps")
