@@ -65,7 +65,7 @@ GRUPOS = [["MAT1620","FIS1514","IIC1103"],["MAT1620","ICE1514","IIC1103"],["MAT1
 
 DELTA_DIAS = 2
 
-SEC_COORDINADAS = [["ICS3313","2","3"],["ICS3413","2","3"],["ICS2523","1","2"]]
+SEC_COORDINADAS = [["ICS2123", "2", "3"], ["ICS3313", "2", "3"], ["ICS3413", "2", "3"]] #[["ICS3313","2","3"],["ICS3413","2","3"],["ICS2523","1","2"]]
 
 CURSOS_3_IES = ["MAT1640_Coordinado - Macroseccion","MAT1630_Coordinado - Macroseccion","MAT1620_Coordinado - Macroseccion","MAT1610_Coordinado - Macroseccion",
                 "MAT1203_Coordinado - Macroseccion","EYP1113_Coordinado - Macroseccion"]
