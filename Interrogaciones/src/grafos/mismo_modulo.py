@@ -112,8 +112,13 @@ def reemplazar_siglas_con_macrosecciones(grafo_tope_horario: nx.classes.graph.Gr
             grafo_tope_horario.remove_node(nodo)
 
     for macroseccion, siglas in macrosecciones_tope_horario.items():
+        print("macroseccion, siglas", macroseccion, siglas)
         for sigla in siglas:
             grafo_tope_horario.add_edge(macroseccion, sigla)
+
+            for m2, s2 in macrosecciones_tope_horario.items():
+                if m2 != macroseccion and sigla in s2:
+                    grafo_tope_horario.add_edge(macroseccion, m2)
 
     for macroseccion in macrosecciones_sin_topes :
         grafo_tope_horario.add_node(macroseccion)
