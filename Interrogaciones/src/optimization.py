@@ -49,12 +49,22 @@ G = nx.read_edgelist("grafo_modulos_edgelist.txt",
 G = nx.induced_subgraph(G, cursos)
 print('Nodos', len(G.nodes()), 'Arcos', len(G.edges()))
 
-cliques = {}
+cliques = []
 
 for clique in nx.find_cliques(G):
-    cliques[len(cliques)] = clique
+    cliques.append(sorted(clique))
+
+for curso in cursos:
+    if curso not in G.nodes():
+        print("Curso aislado", curso)
+        cliques.append([curso])
 
 print('Cliques', len(cliques))
+
+cliques = sorted(cliques)
+
+#for clique in range(len(cliques)):
+#    print(clique,cliques[clique])
 
 # Empieza el modelo
 model = Model("Calendarizacion Interrogaciones")
@@ -99,12 +109,12 @@ for curso, interrogaciones in CONJUNTO_INTERROGACIONES.items():
 
 
 
-y = model.addVars(cliques,
+y = model.addVars(range(len(cliques)),
                   fechas_calendario_cliques,
                   vtype=GRB.BINARY,
                   name="y")
 
-a = model.addVars(J, vtype=GRB.BINARY, name="a")
+#a = model.addVars(J, vtype=GRB.BINARY, name="a")
 
 model.update()
 
@@ -139,13 +149,13 @@ for curso in cursos:
 
 
 model.addConstrs(quicksum(x[curso, dia, prueba] for prueba in CONJUNTO_INTERROGACIONES[curso]) <= quicksum(
-    y[clique, dia] for clique in cliques if curso in cliques[clique]) for curso in cursos for dia in fechas_calendario[curso])
+    y[clique, dia] for clique in range(len(cliques)) if curso in cliques[clique]) for curso in cursos for dia in fechas_calendario[curso])
 
 model.addConstrs(quicksum(y[clique, dia]
-                 for clique in cliques) <= 1 for dia in fechas_calendario_cliques)
+                 for clique in range(len(cliques))) <= 1 for dia in fechas_calendario_cliques)
 
 #Separa los cursos de grupos en delta días
-if False: #for grupo in GRUPOS_M :
+if False:#for grupo in GRUPOS_M :
     for d in range(dias_calendario):
         intervalo = []
         for i in range(DELTA_DIAS + 1) :
@@ -159,10 +169,10 @@ model.addConstrs(x[curso,dia,interrogacion] == 1 for (curso,dia,interrogacion) i
 model.addConstrs(quicksum(z[curso,interrogacion] for interrogacion in CONJUNTO_INTERROGACIONES[curso]) == len(CONJUNTO_INTERROGACIONES[curso])*z[curso, 1] for curso in cursos)
 
 #Restriccion 2 dias consecutivos sin pruebas
-model.addConstr(quicksum(a[j] for j in J) == 1)
+#model.addConstr(quicksum(a[j] for j in J) == 1)
 
-model.addConstrs(quicksum(quicksum(x[curso,dia,interrogacion] for dia in range(diasem+j,diasem+j+2) if dia in fechas_calendario[curso]) 
-                          for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso]) <= len(cursos)*2*3*(1-a[j]) for j in J) 
+#model.addConstrs(quicksum(quicksum(x[curso,dia,interrogacion] for dia in range(diasem+j,diasem+j+2) if dia in fechas_calendario[curso])
+#                          for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso]) <= len(cursos)*2*3*(1-a[j]) for j in J)
 #*2*3 para compensar por la suma sobre 2 dias, 3 interrogaciones max
 
 
@@ -175,13 +185,17 @@ model.setObjectiveN(quicksum(z[curso, interrogacion] * vacantes[curso] for curso
                     index=0, priority=10, name="Interrogaciones no asignadas" )
 
 #trata de adelantar interrogaciones
+model.setObjectiveN(quicksum(x[curso, dia, interrogacion] * vacantes[curso] for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso] for dia in fechas_calendario[curso] if dia%7 == 5),
+                   index=3, priority=9, name="Sábados")
+
+#trata de adelantar interrogaciones
 model.setObjectiveN(quicksum(x[curso, dia, interrogacion] * vacantes[curso] * dia for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso] for dia in fechas_calendario[curso] ),
-                   index=2, priority=9, name="Adelantar interrogaciones")
+                   index=2, priority=8, name="Adelantar interrogaciones")
 
 #minimiza vacantes asignadas antes/despues de las fechas deseadas
 model.setObjectiveN(quicksum(quicksum(x[curso, dia, 1] * vacantes[curso] * (dia - dia_retiro) for dia in fechas_calendario[curso] if dia >= dia_retiro) +
                     quicksum(x[curso,dia, 2] * vacantes[curso] * (dia_i2 - dia) for dia in fechas_calendario[curso] if dia <= dia_i2) for curso in cursos),
-                   index=1, priority=8, name="Fechas deseadas")
+                   index=1, priority=7, name="Fechas deseadas")
 
 # model.setObjectiveN(quicksum(x[curso,dia,1]*vacantes[curso]*dia for curso in cursos for dia in fechas_calendario[curso] if dia >= dia_retiro),
 #                     index = 1, priority = 8, name = "Obj2")
@@ -189,10 +203,12 @@ model.setObjectiveN(quicksum(quicksum(x[curso, dia, 1] * vacantes[curso] * (dia 
 env0 = model.getMultiobjEnv(0)
 env1 = model.getMultiobjEnv(1)
 env2 = model.getMultiobjEnv(2)
+env3 = model.getMultiobjEnv(3)
 
-env0.setParam('TimeLimit', 60)
+env0.setParam('TimeLimit', 1800)
 env1.setParam('TimeLimit', 60)
-env2.setParam('TimeLimit', 30)
+env2.setParam('TimeLimit', 60)
+env3.setParam('TimeLimit', 60)
 
 model.optimize()
 
@@ -225,7 +241,3 @@ for curso in cursos:
     for interrogacion in CONJUNTO_INTERROGACIONES[curso]:
         if z[curso, interrogacion].x > 0.1:
             print(curso, interrogacion, vacantes[curso])
-
-
-
-# model.write("modelo.mps")
