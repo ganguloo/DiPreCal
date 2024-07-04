@@ -145,7 +145,7 @@ model.addConstrs(quicksum(y[clique, dia]
                  for clique in cliques) <= 1 for dia in fechas_calendario_cliques)
 
 #Separa los cursos de grupos en delta días
-for grupo in GRUPOS_M :
+if False: #for grupo in GRUPOS_M :
     for d in range(dias_calendario):
         intervalo = []
         for i in range(DELTA_DIAS + 1) :
