@@ -11,7 +11,7 @@ PATH_LISTADO_NRC = os.path.join("excel_horarios",
 # y todo eso
 # PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios", "Listado_NRC_2023_Enero.xlsx")
 # PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios", "Cursos planificados 2024-2 detalle.xlsx")
-PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios", "004 - Listado de NRC Programados - JUN-24-2024.xlsx")
+PATH_LISTADO_NRC_ORIGINAL = os.path.join("excel_horarios", "004 - Listado de NRC Programados.xlsx")
 
 
 
