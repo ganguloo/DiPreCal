@@ -30,7 +30,7 @@ from grafos.drawing import dibujar_grafo
 from parametros.parametros import (PATH_CURSOS_IES, PATH_LISTADO_NRC,PATH_LISTADO_NRC_ORIGINAL,PATH_CURSOS_IES_ORIGINAL, PATH_MATERIAS,
                                    IDENTIFICADORES_FMAT, CURSOS_3_IES, CURSOS_COORDINADOS, SEC_COORDINADAS,
                                    INCLUIR_FIS_Y_QIM, INCLUIR_MAT, IDENTIFICADORES_FIS_Y_QIM, PATH_IES,
-                                   PATH_FECHAS)
+                                   PATH_FECHAS, COMPATIBLES)
 
 from datos.generacion_calendario import generacion_calendario
 
@@ -142,6 +142,12 @@ def main(crear_parametros_ies=True, crear_parametros_fechas=True):
             mapeo_macrosseciones_label[nodo] = nombre
 
     grafo_modulos = nx.relabel_nodes(grafo_modulos, mapeo_macrosseciones_label)
+
+    for grupo in COMPATIBLES:
+        for c1 in grupo:
+            for c2 in grupo:
+                if c1 != c2 and c1+"_Coordinado - Macroseccion" in grafo_modulos.nodes() and c2+"_Coordinado - Macroseccion" in grafo_modulos.nodes() :
+                    grafo_modulos.add_edge(c1+"_Coordinado - Macroseccion", c2+"_Coordinado - Macroseccion")
     
     # Guardado de datos
     guardado_conexiones(grafo_modulos)
