@@ -119,40 +119,41 @@ y = model.addVars(range(len(cliques)),
 model.update()
 
 # Cada prueba se asigna una vez
-model.addConstrs(quicksum(x[curso, dia, interrogacion] for dia in fechas_calendario[curso])
-                 + z[curso, interrogacion] == 1 for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso])
+model.addConstrs((quicksum(x[curso, dia, interrogacion] for dia in fechas_calendario[curso])
+                 + z[curso, interrogacion] == 1 for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso]), name="asignar")
 
 # No superar el tope máximo por día
 # Atento al lado derecho y la indexación respecto a las fechas
-model.addConstrs(quicksum(x[curso, dia, interrogacion] * vacantes[curso]
-                          for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso] if mapeo_fechas[dia] in CONJUNTO_FECHAS[curso].values()) <= V for dia in fechas_calendario_cliques)
+model.addConstrs((quicksum(x[curso, dia, interrogacion] * vacantes[curso]
+                          for curso in cursos for interrogacion in CONJUNTO_INTERROGACIONES[curso] if mapeo_fechas[dia] in CONJUNTO_FECHAS[curso].values()) <= V for dia in fechas_calendario_cliques), name="vacantes")
 
 # Restricción del intervalo posible de días para la I2 dada la I1
 for curso in cursos:
-    for dia in fechas_calendario[curso]:
-        # Recorremos hasta el penúltimo
-        for interrogacion in CONJUNTO_INTERROGACIONES[curso][:-1]:
-            # inferior deberia ser siempre menor a superior, de ahí revisar
-            inferior = dia + delta_min
-            superior = min(fechas_calendario[curso][-1], dia + delta_max)
-            # if inferior < superior:
-#
-            # En este rango, puede ser que se generen fechas que no estaban inicialmente consideradas
-            rango_dias_validos = [x for x in range(
-                inferior, superior + 1) if x in fechas_calendario[curso]]
-            # if inferior >= fechas_calendario[:-1]:
-            # print(rango_dias_validos, fechas_calendario)
-            # for t in rango_dias_validos:
-            # model.addConstr((x[curso, dia, 1] <= quicksum(x[curso, t, 2])))
-            model.addConstr((x[curso, dia, interrogacion] <= quicksum(
-                x[curso, t, interrogacion + 1] for t in rango_dias_validos) + z[curso, interrogacion + 1]))
+    if "MAT" not in curso and "EYP" not in curso:
+        for dia in fechas_calendario[curso]:
+            # Recorremos hasta el penúltimo
+            for interrogacion in CONJUNTO_INTERROGACIONES[curso][:-1]:
+                # inferior deberia ser siempre menor a superior, de ahí revisar
+                inferior = dia + delta_min
+                superior = min(fechas_calendario[curso][-1], dia + delta_max)
+                # if inferior < superior:
+    #
+                # En este rango, puede ser que se generen fechas que no estaban inicialmente consideradas
+                rango_dias_validos = [x for x in range(
+                    inferior, superior + 1) if x in fechas_calendario[curso]]
+                # if inferior >= fechas_calendario[:-1]:
+                # print(rango_dias_validos, fechas_calendario)
+                # for t in rango_dias_validos:
+                # model.addConstr((x[curso, dia, 1] <= quicksum(x[curso, t, 2])))
+                model.addConstr((x[curso, dia, interrogacion] <= quicksum(
+                    x[curso, t, interrogacion + 1] for t in rango_dias_validos) + z[curso, interrogacion + 1]), name="rango_{0}_{1}_{2}".format(curso,dia,interrogacion))
 
 
-model.addConstrs(quicksum(x[curso, dia, prueba] for prueba in CONJUNTO_INTERROGACIONES[curso]) <= quicksum(
-    y[clique, dia] for clique in range(len(cliques)) if curso in cliques[clique]) for curso in cursos for dia in fechas_calendario[curso])
+model.addConstrs((quicksum(x[curso, dia, prueba] for prueba in CONJUNTO_INTERROGACIONES[curso]) <= quicksum(
+    y[clique, dia] for clique in range(len(cliques)) if curso in cliques[clique]) for curso in cursos for dia in fechas_calendario[curso]), name="clique_interrogacion")
 
-model.addConstrs(quicksum(y[clique, dia]
-                 for clique in range(len(cliques))) <= 1 for dia in fechas_calendario_cliques)
+model.addConstrs((quicksum(y[clique, dia]
+                 for clique in range(len(cliques))) <= 1 for dia in fechas_calendario_cliques), name="clique_dia")
 
 #Separa los cursos de grupos en delta días
 if False:#for grupo in GRUPOS_M :
@@ -163,10 +164,10 @@ if False:#for grupo in GRUPOS_M :
         model.addConstr(quicksum(x[curso,dia,interrogacion] for curso in grupo for interrogacion in CONJUNTO_INTERROGACIONES[curso] for dia in intervalo if dia in fechas_calendario[curso]) <= 1)
 
 
-model.addConstrs(x[curso,dia,interrogacion] == 1 for (curso,dia,interrogacion) in PRUEBAS_PREASIGNADAS)
+model.addConstrs((x[curso,dia,interrogacion] == 1 for (curso,dia,interrogacion) in PRUEBAS_PREASIGNADAS), name="fijar")
 
 #No permite cursos que sólo asignen una de sus pruebas
-model.addConstrs(quicksum(z[curso,interrogacion] for interrogacion in CONJUNTO_INTERROGACIONES[curso]) == len(CONJUNTO_INTERROGACIONES[curso])*z[curso, 1] for curso in cursos)
+model.addConstrs((quicksum(z[curso,interrogacion] for interrogacion in CONJUNTO_INTERROGACIONES[curso]) == len(CONJUNTO_INTERROGACIONES[curso])*z[curso, 1] for curso in cursos), name = "todas_ninguna")
 
 #Restriccion 2 dias consecutivos sin pruebas
 #model.addConstr(quicksum(a[j] for j in J) == 1)
@@ -205,7 +206,7 @@ env1 = model.getMultiobjEnv(1)
 env2 = model.getMultiobjEnv(2)
 env3 = model.getMultiobjEnv(3)
 
-env0.setParam('TimeLimit', 1800)
+env0.setParam('TimeLimit', 300)
 env1.setParam('TimeLimit', 60)
 env2.setParam('TimeLimit', 60)
 env3.setParam('TimeLimit', 60)
@@ -219,6 +220,7 @@ if model.status == gp.GRB.INFEASIBLE:
     model.computeIIS()
     restricciones_infactibles = model.getConstrs()
     model.write("Infactible.ilp")
+    exit(0)
 
 
 # model.write("model.sol")
