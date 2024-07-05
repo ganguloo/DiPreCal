@@ -40,7 +40,7 @@ def fijar_interrogaciones(excel_file, sheet):
     cursos_coordinados = excel_cursos_coordinados(excel_file, "Cursos Coordinados")
 
     for prueba in first_three_columns_data:
-        prueba[2] = (prueba[2] - fecha_inicio_clases).days
+        prueba[1] = (prueba[1] - fecha_inicio_clases).days
         if prueba[0] in cursos_coordinados:
             prueba[0] += "_Coordinado - Macroseccion"
 
